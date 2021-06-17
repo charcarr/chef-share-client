@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { trackPromise } from 'react-promise-tracker';
 
 import LoadingInd from "../../LoadingInd/loadingInd";
-import apiService from "../../../services/apiService";
+import { attemptLogin } from "../../../services/apiService";
 import { set_is_authenticated } from "../../../state/actions";
 import logo from "../../../images/bighat.png";
 import styles from "./login.module.css";
@@ -14,8 +14,10 @@ interface State {
   password: string;
 }
 
-interface res {
-  accessToken: string;
+interface authResponse extends Response {
+  locals: {
+    accessToken: string;
+  }
 }
 
 const initialState: State = {
@@ -38,11 +40,11 @@ const Login: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    trackPromise(apiService.attemptLogin(login)
-      .then(res => res.json())
-      .then(res => {
+    trackPromise(attemptLogin(login)
+      .then<authResponse>(res => res.json())
+      .then((res: authResponse) => {
         dispatch(set_is_authenticated());
-        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('accessToken', res.locals.accessToken);
         setLogin(initialState);
         navigate('/profile');
       })
