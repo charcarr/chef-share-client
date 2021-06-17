@@ -2,7 +2,7 @@
 const BASE_URL = "http://localhost:3001"
 
 
-const authPost = (route, body) => {
+export const authPost = (route, body) => {
   let token = localStorage.getItem('accessToken');
   return fetch(BASE_URL+route, {
     method: 'POST',
@@ -14,7 +14,7 @@ const authPost = (route, body) => {
   })
 }
 
-const noAuthPost = (route, body) => {
+export const noAuthPost = (route, body) => {
   return fetch(BASE_URL+route, {
     method: 'POST',
     headers: {
@@ -24,7 +24,7 @@ const noAuthPost = (route, body) => {
   });
 }
 
-const authGet = (route) => {
+export const authGet = (route) => {
   let token = localStorage.getItem('accessToken');
   if (route === '/logout') localStorage.removeItem('accessToken');
   return fetch(BASE_URL+route, {
@@ -36,73 +36,65 @@ const authGet = (route) => {
 
 
 // auth
-const attemptLogin = (login) => {
+export const attemptLogin = (login) => {
   return noAuthPost('/login', login);
 };
 
-const attemptSignup = (signup) => {
+export const attemptSignup = (signup) => {
   return noAuthPost('/signup', signup);
 };
 
-const logout = () => {
+export const logout = () => {
   return authGet('/logout');
 };
 
-const fetchProfileData = () => {
+export const fetchProfileData = () => {
   return authGet('/profile');
 }
 
 
 // scraping
-const scrapeRecipe = (url) => {
+export const scrapeRecipe = (url) => {
   const body = {url};
   return authPost('/scrape', body);
 }
 
 
 // friends
-const getFriends = () => {
+export const getFriends = () => {
   return authGet('/users')
 }
 
-const getFriendStore = (username) => {
+export const getFriendStore = (username) => {
   const body = {username};
   return authPost('/getFriendStore', body);
 }
 
-const addFromFriend = (recipe) => {
+export const addFromFriend = (recipe) => {
   const body = {recipe};
   return authPost('/addFromFriend', body);
 }
 
 
 // edits
-const deleteRecipe = (id) => {
+export const deleteRecipe = (id) => {
   const body = {id}
   return authPost('/deleteRecipe', body);
 }
 
-const editRecipe = (id, payload, editAction) => {
+export const editRecipe = (id, payload, editAction) => {
   const body = {id, payload};
   return authPost(`/editRecipe/${editAction}`, body);
 }
 
-const nameChange = (id, name) => {
+export const nameChange = (id, name) => {
   editRecipe(id, name, 'nameChange');
 };
 
-const addNote = (id, note) => {
+export const addNote = (id, note) => {
   editRecipe(id, note, 'addNote');
 }
 
-const deleteNote = (id, noteId) => {
+export const deleteNote = (id, noteId) => {
   editRecipe(id, noteId, 'deleteNote');
-}
-
-
-
-module.exports = {
-  attemptLogin, attemptSignup, logout, fetchProfileData,
-  scrapeRecipe, deleteRecipe, nameChange, addNote, deleteNote,
-  getFriends, getFriendStore, addFromFriend
 }
