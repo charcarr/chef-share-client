@@ -7,28 +7,37 @@ import LoadingInd from "../../LoadingInd/loadingInd";
 import apiService from "../../../services/apiService";
 import { set_is_authenticated } from "../../../state/actions";
 import logo from "../../../images/bighat.png";
-import * as styles from "./login.module.css";
+import styles from "./login.module.css";
 
+interface State {
+  email: string;
+  password: string;
+}
 
-const initialState = {
+interface res {
+  accessToken: string;
+}
+
+const initialState: State = {
   email: '',
   password: ''
 }
-const Login = () => {
-  const [login, setLogin] = useState(initialState);
-  const [loginError, setLoginError] = useState(false);
+
+const Login: React.FC = () => {
+  const [login, setLogin] = useState<State>(initialState);
+  const [loginError, setLoginError] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  const handleLogin = ({target}) => {
-    setLogin(oldLogin => ({...oldLogin, [target.name]:target.value}))
+  const handleLogin: React.ChangeEventHandler<HTMLInputElement> = ({target}) => {
+    setLogin((oldLogin: State) => ({...oldLogin, [target.name]:target.value}))
     setLoginError(false);
   };
   const validateForm = () => {
     return !login.email || !login.password;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
     trackPromise(apiService.attemptLogin(login)
       .then(res => res.json())
       .then(res => {
@@ -37,9 +46,9 @@ const Login = () => {
         setLogin(initialState);
         navigate('/profile');
       })
-      .catch(err => {
+      .catch((err: string) => {
         setLoginError(true);
-        console.log(e);
+        console.log(err);
       }));
   };
 
