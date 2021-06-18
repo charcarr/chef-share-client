@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@types/node-uuid": "0.0.28",
+    "@types/react-redux": "^7.1.16",
+    "@types/redux-logger": "^3.0.8",
     "cheerio": "^1.0.0-rc.10",
     "gatsby": "^3.6.2",
     "gatsby-plugin-manifest": "^3.7.1",
