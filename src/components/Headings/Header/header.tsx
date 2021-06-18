@@ -2,10 +2,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Logout from "../../Auth/Logout/logout";
 import logo from "../../../images/smallhat.png";
-import * as styles from "./header.module.css";
+import styles from "./header.module.css";
 
-const Header = () => {
-  const username = useSelector((state) => state.username);
+interface RootState {
+  username: string;
+  isAuthenticated: boolean;
+  recipeStore: [recipe | null];
+}
+
+type recipe = Record<string, unknown>;
+
+const Header: React.FC = () => {
+  const username = useSelector((state: RootState) => state.username);
 
   return (
     <div className={styles.container}>
