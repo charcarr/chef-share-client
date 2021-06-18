@@ -12,7 +12,7 @@ const Modal = ({ show, handleClose }) => {
   const [success, setSuccess] = useState(false);
 
 
-  const handleChange = ({ target }) => {
+  const handleChange: React.FC = ({ target }) => {
     setUrl(target.value);
     setError(false);
     setSuccess(false);

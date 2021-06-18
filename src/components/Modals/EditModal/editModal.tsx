@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import uuid from "node-uuid";
-
 import { change_name, add_note, delete_note } from "../../../state/actions";
 import { deleteNote, addNote, nameChange } from "../../../services/apiService";
 import styles from "./editModal.module.css";
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 interface recipeNote {
   id: string;
   text: string;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 interface recipe {
   id: string;
   name: string;
@@ -25,24 +30,33 @@ interface recipe {
   notes: recipeNote[];
   origin: string;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 interface Props {
   show: boolean;
   handleClose: () => void;
   recipe: recipe;
 }
+<<<<<<< HEAD
 
 const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
 
+=======
+const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
+>>>>>>> main
   // display states
   const [notes, setNotes] = useState<recipeNote[]>(recipe.notes);
   const [editMode, setEditMode] = useState<boolean>(false);
   // form management
   const [nameInput, setNameInput] = useState<string>(recipe.name);
   const [noteInput, setNoteInput] = useState<string>("");
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
   const dispatch = useDispatch();
-
   // title change
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNameInput(target.value);
@@ -59,7 +73,6 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
       console.log(e);
     }
   };
-
   // adding notes
   const handleNoteChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNoteInput(target.value);
@@ -67,7 +80,6 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
   const handleNoteSubmit: React.FormEventHandler<HTMLFormElement>  = async (e) => {
     e.preventDefault();
     setEditMode(false);
-
     if (noteInput) {
       const newNote = {id: uuid.v4(), text: noteInput}
       try {
@@ -80,7 +92,10 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
       }
     }
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
   const handleDelete = async (id: string) => {
     const noteId = id;
     try {
@@ -91,10 +106,8 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
       console.log(e);
     }
   }
-
   return (
     <div className={show ? styles.modalShow : styles.modalHide}>
-
       <form onSubmit={handleSubmit}>
         <div className={styles.buttons}>
           <div
@@ -112,7 +125,6 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
           className={styles.input__title}
         />
       </form>
-
       <div className={styles.heading__notes}>Notes</div>
       <div
         className={styles.button__addNote}
@@ -153,5 +165,4 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
     </div>
   );
 };
-
 export default EditModal;
