@@ -1,12 +1,37 @@
 import React from "react";
 import Recipe from "../Recipe/recipe";
 
-const RecipeList = ({ recipeStore, viewAsSelf}) => {
+interface recipeNote {
+  id: string;
+  text: string;
+}
+
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
+
+interface Props {
+  recipeStore: recipe[];
+  viewAsSelf: boolean;
+}
+
+const RecipeList = ({ recipeStore, viewAsSelf}: Props) => {
 
   return (
     <>
       {recipeStore.length
-        ? recipeStore.map((recipe) =>
+        ? recipeStore.map((recipe: recipe) =>
             viewAsSelf ? (
               <Recipe
                 key={recipe.id}

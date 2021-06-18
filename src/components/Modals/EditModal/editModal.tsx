@@ -4,10 +4,12 @@ import uuid from "node-uuid";
 import { change_name, add_note, delete_note } from "../../../state/actions";
 import { deleteNote, addNote, nameChange } from "../../../services/apiService";
 import styles from "./editModal.module.css";
+
 interface recipeNote {
   id: string;
   text: string;
 }
+
 interface recipe {
   id: string;
   name: string;
@@ -22,19 +24,23 @@ interface recipe {
   notes: recipeNote[];
   origin: string;
 }
+
 interface Props {
   show: boolean;
   handleClose: () => void;
   recipe: recipe;
 }
+
 const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
   // display states
   const [notes, setNotes] = useState<recipeNote[]>(recipe.notes);
   const [editMode, setEditMode] = useState<boolean>(false);
+
   // form management
   const [nameInput, setNameInput] = useState<string>(recipe.name);
   const [noteInput, setNoteInput] = useState<string>("");
   const dispatch = useDispatch();
+
   // title change
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNameInput(target.value);
@@ -51,6 +57,7 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
       console.log(e);
     }
   };
+
   // adding notes
   const handleNoteChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNoteInput(target.value);
@@ -80,6 +87,7 @@ const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
       console.log(e);
     }
   }
+
   return (
     <div className={show ? styles.modalShow : styles.modalHide}>
       <form onSubmit={handleSubmit}>
