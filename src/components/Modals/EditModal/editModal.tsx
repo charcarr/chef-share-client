@@ -1,27 +1,40 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import uuid from "node-uuid";
-
 import { change_name, add_note, delete_note } from "../../../state/actions";
 import { deleteNote, addNote, nameChange } from "../../../services/apiService";
 import styles from "./editModal.module.css";
-
-interface State {
-  email: string;
-  password: string;
+interface recipeNote {
+  id: string;
+  text: string;
 }
-
-const EditModal: React.FC = ({ show, handleClose, recipe }) => {
-
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
+interface Props {
+  show: boolean;
+  handleClose: () => void;
+  recipe: recipe;
+}
+const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
   // display states
-  const [notes, setNotes] = useState<State>(recipe.notes);
+  const [notes, setNotes] = useState<recipeNote[]>(recipe.notes);
   const [editMode, setEditMode] = useState<boolean>(false);
   // form management
-  const [nameInput, setNameInput] = useState<State>(recipe.name);
-  const [noteInput, setNoteInput] = useState("");
-
+  const [nameInput, setNameInput] = useState<string>(recipe.name);
+  const [noteInput, setNoteInput] = useState<string>("");
   const dispatch = useDispatch();
-
   // title change
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNameInput(target.value);
@@ -38,7 +51,6 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
       console.log(e);
     }
   };
-
   // adding notes
   const handleNoteChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNoteInput(target.value);
@@ -46,7 +58,6 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
   const handleNoteSubmit: React.FormEventHandler<HTMLFormElement>  = async (e) => {
     e.preventDefault();
     setEditMode(false);
-
     if (noteInput) {
       const newNote = {id: uuid.v4(), text: noteInput}
       try {
@@ -59,21 +70,18 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
       }
     }
   };
-
-  const handleDelete:  = async (e) => {
-    const noteId = e.target.id;
+  const handleDelete = async (id: string) => {
+    const noteId = id;
     try {
-      await deleteNote(recipe.id, noteId);
+      deleteNote(recipe.id, noteId);
       dispatch(delete_note(recipe.id, noteId));
       setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId));
     } catch (e) {
       console.log(e);
     }
   }
-
   return (
     <div className={show ? styles.modalShow : styles.modalHide}>
-
       <form onSubmit={handleSubmit}>
         <div className={styles.buttons}>
           <div
@@ -91,7 +99,6 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
           className={styles.input__title}
         />
       </form>
-
       <div className={styles.heading__notes}>Notes</div>
       <div
         className={styles.button__addNote}
@@ -111,11 +118,10 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
                     <span aria-hidden="true">📩</span>
                   </button>
                 </form>
-
                 {
                   notes.map((note, index) => (
                     <div key={index} className={styles.delete__container}>
-                      <button id={note.id} onClick={handleDelete}>x</button>
+                      <button id={note.id} onClick={() => handleDelete(note.id)}>x</button>
                       <p>{note.text}</p>
                     </div>
                   ))
@@ -130,10 +136,7 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
         }
       </ul>
     }
-
-
     </div>
   );
 };
-
 export default EditModal;
