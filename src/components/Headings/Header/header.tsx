@@ -7,7 +7,7 @@ import styles from "./header.module.css";
 interface RootState {
   username: string;
   isAuthenticated: boolean;
-  recipeStore: [recipe | null];
+  recipeStore: recipe[];
 }
 
 type recipe = Record<string, unknown>;

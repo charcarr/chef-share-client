@@ -6,19 +6,40 @@ import { change_name, add_note, delete_note } from "../../../state/actions";
 import { deleteNote, addNote, nameChange } from "../../../services/apiService";
 import styles from "./editModal.module.css";
 
-interface State {
-  email: string;
-  password: string;
+interface recipeNote {
+  id: string;
+  text: string;
 }
 
-const EditModal: React.FC = ({ show, handleClose, recipe }) => {
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
+
+interface Props {
+  show: boolean;
+  handleClose: () => void;
+  recipe: recipe;
+}
+
+const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
 
   // display states
-  const [notes, setNotes] = useState<State>(recipe.notes);
+  const [notes, setNotes] = useState<recipeNote[]>(recipe.notes);
   const [editMode, setEditMode] = useState<boolean>(false);
   // form management
-  const [nameInput, setNameInput] = useState<State>(recipe.name);
-  const [noteInput, setNoteInput] = useState("");
+  const [nameInput, setNameInput] = useState<string>(recipe.name);
+  const [noteInput, setNoteInput] = useState<string>("");
 
   const dispatch = useDispatch();
 
@@ -60,10 +81,10 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
     }
   };
 
-  const handleDelete:  = async (e) => {
-    const noteId = e.target.id;
+  const handleDelete = async (id: string) => {
+    const noteId = id;
     try {
-      await deleteNote(recipe.id, noteId);
+      deleteNote(recipe.id, noteId);
       dispatch(delete_note(recipe.id, noteId));
       setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId));
     } catch (e) {
@@ -111,11 +132,10 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
                     <span aria-hidden="true">📩</span>
                   </button>
                 </form>
-
                 {
                   notes.map((note, index) => (
                     <div key={index} className={styles.delete__container}>
-                      <button id={note.id} onClick={handleDelete}>x</button>
+                      <button id={note.id} onClick={() => handleDelete(note.id)}>x</button>
                       <p>{note.text}</p>
                     </div>
                   ))
@@ -130,8 +150,6 @@ const EditModal: React.FC = ({ show, handleClose, recipe }) => {
         }
       </ul>
     }
-
-
     </div>
   );
 };

@@ -15,7 +15,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@types/node-uuid": "^0.0.28",
+    "@types/node-uuid": "0.0.28",
     "cheerio": "^1.0.0-rc.10",
     "gatsby": "^3.6.2",
     "gatsby-plugin-manifest": "^3.7.1",
