@@ -1,7 +1,7 @@
 import React from "react";
 import { usePromiseTracker } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
-import * as styles from "./loadingInd.module.css";
+import styles from "./loadingInd.module.css";
 
 interface Props {
   color?: string;
