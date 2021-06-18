@@ -14,7 +14,7 @@ export const set_not_authenticated = () => ({
 
 
 
-export const set_username = (username) => ({
+export const set_username = (username: string) => ({
   type: "SET_USERNAME",
   payload: username
 });
