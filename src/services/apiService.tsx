@@ -6,7 +6,7 @@ interface authBody {
   password?: string;
   username?: string;
   url?: string;
-  recipe?: Record<string, unknown>;
+  recipe?: recipe;
   id?: string;
   payload?: string | recipeNote;
 }
@@ -14,6 +14,21 @@ interface authBody {
 interface recipeNote {
   id: string;
   text: string;
+}
+
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
 }
 
 export const authPost = (route: string, body: authBody) => {
@@ -84,7 +99,7 @@ export const getFriendStore = (username: string) => {
   return authPost('/getFriendStore', body);
 }
 
-export const addFromFriend = (recipe: Record<string, unknown>) => {
+export const addFromFriend = (recipe: recipe) => {
   const body = {recipe};
   return authPost('/addFromFriend', body);
 }

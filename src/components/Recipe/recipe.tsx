@@ -3,18 +3,51 @@ import { useDispatch, useSelector } from "react-redux";
 import { BsPencil } from "react-icons/bs";
 
 import { delete_item, add_item } from "../../state/actions";
-import apiService from "../../services/apiService";
+import { deleteRecipe, addFromFriend } from "../../services/apiService";
 import RecipeModal from "../Modals/RecipeModal/recipeModal";
 import EditModal from "../Modals/EditModal/editModal";
-import * as styles from "./recipe.module.css";
+import styles from "./recipe.module.css";
 
+interface RootState {
+  username: string;
+  isAuthenticated: boolean;
+  recipeStore: recipe[];
+}
 
-const Recipe = ({ recipe, remove, edit, save, self}) => {
-  const [inFocus, setInFocus] = useState(false);
-  const [modalStatus, setModalStatus] = useState(false);
-  const [editModalStatus, setEditModalStatus] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const me = useSelector((state) => state.username);
+interface recipeNote {
+  id: string;
+  text: string;
+}
+
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
+
+interface Props {
+  recipe: recipe;
+  remove: boolean;
+  edit: boolean;
+  save: boolean;
+  self: boolean;
+}
+
+const Recipe = ({ recipe, remove, edit, save, self}: Props) => {
+  const [inFocus, setInFocus] = useState<boolean>(false);
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+  const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
+  const [saved, setSaved] = useState<boolean>(false);
+  const me = useSelector((state: RootState) => state.username);
   const dispatch = useDispatch();
 
   const handleModal = () => {
@@ -26,7 +59,7 @@ const Recipe = ({ recipe, remove, edit, save, self}) => {
 
   const handleDelete = async () => {
     try {
-      await apiService.deleteRecipe(recipe.id);
+      await deleteRecipe(recipe.id);
       dispatch(delete_item(recipe.id));
       setSaved(false);
     } catch (e) {
@@ -36,7 +69,7 @@ const Recipe = ({ recipe, remove, edit, save, self}) => {
 
   const handleSave = async () => {
     try {
-      await apiService.addFromFriend(recipe);
+      await addFromFriend(recipe);
       dispatch(add_item(recipe));
       setSaved(true);
     } catch (e) {
