@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Select from 'react-select';
+import Select, { OptionsType, ValueType } from 'react-select';
 import Header from '../components/Headings/Header/header';
 import NavBar from '../components/Headings/NavBar/navbar';
 import RecipeList from '../components/RecipeList/recipeList';
@@ -12,9 +12,11 @@ interface RootState {
   // recipeStore: recipe[];
 }
 
-interface Selected {
+interface Username {
   value: string;
+  label: string;
 }
+
 
 
 
@@ -38,7 +40,8 @@ const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
     }
   }, [])
 
-  const handleSelect = async(selected: Selected) => {
+  const handleSelect = async(selected: Username | null) => {
+    if (!selected) return 
     try {
       const store = await getFriendStore(selected.value).then(res => res.json());
       setFriendStore(store);
@@ -53,7 +56,7 @@ const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
         <Header/>
         <NavBar/>
         <div style={{width: '80%', marginLeft: '10%', marginRight:'10%', marginTop: '20px'}}>
-          <Select options={options} onChange={(handleSelect:  }/>
+          <Select options={options} onChange={handleSelect}/>
         </div>
         {
           friendStore.length ? <RecipeList recipeStore={friendStore} viewAsSelf={false}/> : null
