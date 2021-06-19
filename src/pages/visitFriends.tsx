@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Select from 'react-select';
+import Select, { OptionsType, ValueType } from 'react-select';
 import Header from '../components/Headings/Header/header';
 import NavBar from '../components/Headings/NavBar/navbar';
 import RecipeList from '../components/RecipeList/recipeList';
-import apiService from '../services/apiService';
+import { getFriends, getFriendStore } from '../services/apiService';
+
+interface RootState {
+  username: string;
+  isAuthenticated: boolean;
+  // recipeStore: recipe[];
+}
+
+interface Username {
+  value: string;
+  label: string;
+}
 
 
-const VisitFriendsPage = () => {
-  const isAuthenticated = useSelector(state => state.isAuthenticated);
-  const [friendStore, setFriendStore] = useState([]);
-  const [options, setOptions] = useState([]);
+
+
+const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.isAuthenticated);
+  const [friendStore, setFriendStore] = useState<[]>([]);
+  const [options, setOptions] = useState<[]>([]);
 
   useEffect(() => {
     const getUserList = async() => {
-      const response = await apiService.getFriends().then(res => res.json());
-      const userList = response.map(username => ({value: username, label: username}));
+      const response = await getFriends().then(res => res.json());
+      const userList = response.map((username: RootState) => ({value: username, label: username}));
       setOptions(userList);
     }
     if (isAuthenticated) {
@@ -27,9 +40,10 @@ const VisitFriendsPage = () => {
     }
   }, [])
 
-  const handleSelect = async(selected) => {
+  const handleSelect = async(selected: Username | null) => {
+    if (!selected) return 
     try {
-      const store = await apiService.getFriendStore(selected.value).then(res => res.json());
+      const store = await getFriendStore(selected.value).then(res => res.json());
       setFriendStore(store);
     } catch(e) {
 
