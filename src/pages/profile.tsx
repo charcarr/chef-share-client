@@ -7,10 +7,15 @@ import Header from '../components/Headings/Header/header';
 import RecipeAdder from '../components/RecipeAdder/recipeAdder';
 import NavBar from '../components/Headings/NavBar/navbar';
 
+interface RootState {
+  username: string;
+  isAuthenticated: boolean;
+  //recipeStore: recipe[];
+}
 
-const ProfilePage = () => {
+const ProfilePage: React.FC<HTMLElement> = () => {
 
-  const isAuthenticated = useSelector(state => state.isAuthenticated);
+  const isAuthenticated = useSelector((state: RootState) => state.isAuthenticated);
   const dispatch = useDispatch();
 
   useEffect( () => {
