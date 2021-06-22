@@ -6,7 +6,7 @@ import { delete_item, add_item } from "../../state/actions";
 import { deleteRecipe, addFromFriend } from "../../services/apiService";
 import RecipeModal from "../Modals/RecipeModal/recipeModal";
 import EditModal from "../Modals/EditModal/editModal";
-import styles from "./recipe.module.css";
+import * as styles from "./recipe.module.css";
 
 interface RootState {
   username: string;

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { logout_user } from "../../../state/actions";
 import { logout } from "../../../services/apiService";
-import styles from "./logout.module.css";
+import * as styles from "./logout.module.css";
 
 const Logout: React.FC = () => {
   const dispatch = useDispatch();

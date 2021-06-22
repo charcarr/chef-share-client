@@ -43,10 +43,10 @@ const handleAuth = (store: Store) => {
     store.dispatch(set_not_authenticated());
   }
 }
-const root = (element: ReactNode) => (
+const root = ({ element }: { element: ReactNode }) => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor} onBeforeLift={() => handleAuth(store)}>
-    {element}
+    { element }
     </PersistGate>
   </Provider>
 );

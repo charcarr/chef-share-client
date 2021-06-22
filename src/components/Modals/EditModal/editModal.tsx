@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import uuid from "node-uuid";
 import { change_name, add_note, delete_note } from "../../../state/actions";
 import { deleteNote, addNote, nameChange } from "../../../services/apiService";
-import styles from "./editModal.module.css";
+import * as styles from "./editModal.module.css";
 
 interface recipeNote {
   id: string;
