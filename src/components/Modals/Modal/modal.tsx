@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
-import styles from "./modal.module.css";
+import * as styles from "./modal.module.css";
 import { trackPromise } from "react-promise-tracker";
 
 import LoadingInd from "../../LoadingInd/loadingInd";

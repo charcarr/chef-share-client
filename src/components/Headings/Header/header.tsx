@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Logout from "../../Auth/Logout/logout";
 import logo from "../../../images/smallhat.png";
-import styles from "./header.module.css";
+import * as styles from "./header.module.css";
 
 interface RootState {
   username: string;

@@ -7,7 +7,7 @@ import LoadingInd from "../../LoadingInd/loadingInd";
 import { attemptLogin } from "../../../services/apiService";
 import { set_is_authenticated } from "../../../state/actions";
 import logo from "../../../images/bighat.png";
-import styles from "./login.module.css";
+import * as styles from "./login.module.css";
 
 interface State {
   email: string;

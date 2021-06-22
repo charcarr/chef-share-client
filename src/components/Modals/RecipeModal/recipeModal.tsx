@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./recipeModal.module.css";
+import * as styles from "./recipeModal.module.css";
 
 interface recipeNote {
   id: string;
