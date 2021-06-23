@@ -87,7 +87,7 @@ const Signup: React.FC = () => {
           signup
         </button>
 
-        <Link to="/" className={styles.linkText}>
+        <Link to="/" className={styles.linkText} data-testid="loginLink">
           click here to login
         </Link>
       </form>
