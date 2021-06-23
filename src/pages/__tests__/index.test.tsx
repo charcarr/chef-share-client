@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, waitFor, screen } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import IndexPage from "../index";
 import ReduxWrapper from '../../state/ReduxWrapper';

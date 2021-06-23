@@ -20,11 +20,13 @@ interface authResponse extends Response {
     accessToken: string;
   }
 }
+
 const initialState: State = {
   email: "",
   password: "",
   username: "",
 };
+
 const Signup: React.FC = () => {
   const [signup, setSignup] = useState<State>(initialState);
   const [signupError, setSignupError] = useState<boolean>(false);
