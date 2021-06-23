@@ -106,7 +106,7 @@ export const addFromFriend = (recipe: recipe) => {
 
 
 // edits
-//id's are UUID's
+//id's are recipe id's of UUID format
 export const deleteRecipe = (id: string) => {
   const body = {id}
   return authPost('/deleteRecipe', body);
