@@ -15,9 +15,7 @@ interface State {
 }
 
 interface authResponse extends Response {
-  locals: {
-    accessToken: string;
-  }
+  accessToken: string;
 }
 
 const initialState: State = {
@@ -44,7 +42,9 @@ const Login: React.FC = () => {
       .then<authResponse>(res => res.json())
       .then((res: authResponse) => {
         dispatch(set_is_authenticated());
-        localStorage.setItem('accessToken', res.locals.accessToken);
+        console.log(res.accessToken);
+
+        localStorage.setItem('accessToken', res.accessToken);
         setLogin(initialState);
         navigate('/profile');
       })
