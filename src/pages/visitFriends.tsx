@@ -17,9 +17,6 @@ interface Username {
   label: string;
 }
 
-
-
-
 const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
   const isAuthenticated = useSelector((state: RootState) => state.isAuthenticated);
   const [friendStore, setFriendStore] = useState<[]>([]);
@@ -41,7 +38,7 @@ const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
   }, [])
 
   const handleSelect = async(selected: Username | null) => {
-    if (!selected) return 
+    if (!selected) return
     try {
       const store = await getFriendStore(selected.value).then(res => res.json());
       setFriendStore(store);

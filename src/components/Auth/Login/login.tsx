@@ -81,7 +81,7 @@ const Login: React.FC = () => {
         <button type="submit" disabled={validateForm()}>
           login
         </button>
-        <Link to="/signup" className={styles.linkText}>
+        <Link to="/signup" className={styles.linkText} data-testid="signupLink">
           click here to sign up
         </Link>
       </form>

@@ -26,12 +26,12 @@ interface recipeNote {
   id: string;
   text: string;
 }
+
 interface RootState {
   username: string;
   isAuthenticated: boolean;
   recipeStore: recipe[];
 }
-
 
 const RecipePage: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.isAuthenticated);
@@ -48,7 +48,6 @@ const RecipePage: React.FC = () => {
       getUserData();
     }
   }, [isAuthenticated, dispatch])
-
 
   return ( <>
    {
