@@ -3,15 +3,15 @@ import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 
 import { logout_user } from "../../../state/actions";
-import apiService from "../../../services/apiService";
+import { logout } from "../../../services/apiService";
 import * as styles from "./logout.module.css";
 
-const Logout = () => {
+const Logout: React.FC = () => {
   const dispatch = useDispatch();
 
-  const handleLogout = async () => {
+  const handleLogout: React.FormEventHandler<HTMLDivElement> = async () => {
     try {
-      await apiService.logout();
+      await logout();
       dispatch(logout_user());
       navigate("/");
     } catch (e) {

@@ -1,33 +1,55 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import uuid from "node-uuid";
-
 import { change_name, add_note, delete_note } from "../../../state/actions";
-import apiService from "../../../services/apiService";
+import { deleteNote, addNote, nameChange } from "../../../services/apiService";
 import * as styles from "./editModal.module.css";
 
+interface recipeNote {
+  id: string;
+  text: string;
+}
 
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
 
-const EditModal = ({ show, handleClose, recipe }) => {
+interface Props {
+  show: boolean;
+  handleClose: () => void;
+  recipe: recipe;
+}
 
+const EditModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
   // display states
-  const [notes, setNotes] = useState(recipe.notes);
-  const [editMode, setEditMode] = useState(false);
-  // form management
-  const [nameInput, setNameInput] = useState(recipe.name);
-  const [noteInput, setNoteInput] = useState("");
+  const [notes, setNotes] = useState<recipeNote[]>(recipe.notes);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
+  // form management
+  const [nameInput, setNameInput] = useState<string>(recipe.name);
+  const [noteInput, setNoteInput] = useState<string>("");
   const dispatch = useDispatch();
 
   // title change
-  const handleChange = ({ target }) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNameInput(target.value);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
       if (nameInput !== recipe.name) {
-        await apiService.nameChange(recipe.id, nameInput);
+        await nameChange(recipe.id, nameInput);
         dispatch(change_name(recipe.id, nameInput));
       }
       handleClose();
@@ -37,17 +59,16 @@ const EditModal = ({ show, handleClose, recipe }) => {
   };
 
   // adding notes
-  const handleNoteChange = ({ target }) => {
+  const handleNoteChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setNoteInput(target.value);
   };
-  const handleNoteSubmit = async (e) => {
+  const handleNoteSubmit: React.FormEventHandler<HTMLFormElement>  = async (e) => {
     e.preventDefault();
     setEditMode(false);
-
     if (noteInput) {
       const newNote = {id: uuid.v4(), text: noteInput}
       try {
-        await apiService.addNote(recipe.id, newNote);
+        await addNote(recipe.id, newNote);
         setNotes((oldNotes) => [...oldNotes, newNote]);
         dispatch(add_note(recipe.id, newNote));
         setNoteInput("");
@@ -56,11 +77,10 @@ const EditModal = ({ show, handleClose, recipe }) => {
       }
     }
   };
-
-  const handleDelete = async (e) => {
-    const noteId = e.target.id;
+  const handleDelete = async (id: string) => {
+    const noteId = id;
     try {
-      await apiService.deleteNote(recipe.id, noteId);
+      deleteNote(recipe.id, noteId);
       dispatch(delete_note(recipe.id, noteId));
       setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId));
     } catch (e) {
@@ -70,7 +90,6 @@ const EditModal = ({ show, handleClose, recipe }) => {
 
   return (
     <div className={show ? styles.modalShow : styles.modalHide}>
-
       <form onSubmit={handleSubmit}>
         <div className={styles.buttons}>
           <div
@@ -88,7 +107,6 @@ const EditModal = ({ show, handleClose, recipe }) => {
           className={styles.input__title}
         />
       </form>
-
       <div className={styles.heading__notes}>Notes</div>
       <div
         className={styles.button__addNote}
@@ -108,11 +126,10 @@ const EditModal = ({ show, handleClose, recipe }) => {
                     <span aria-hidden="true">📩</span>
                   </button>
                 </form>
-
                 {
                   notes.map((note, index) => (
                     <div key={index} className={styles.delete__container}>
-                      <button id={note.id} onClick={handleDelete}>x</button>
+                      <button id={note.id} onClick={() => handleDelete(note.id)}>x</button>
                       <p>{note.text}</p>
                     </div>
                   ))
@@ -127,10 +144,7 @@ const EditModal = ({ show, handleClose, recipe }) => {
         }
       </ul>
     }
-
-
     </div>
   );
 };
-
 export default EditModal;

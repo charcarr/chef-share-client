@@ -1,7 +1,31 @@
 import React from "react";
 import * as styles from "./recipeModal.module.css";
 
-const RecipeModal = ({ show, handleClose, recipe }) => {
+interface recipeNote {
+  id: string;
+  text: string;
+}
+interface recipe {
+  id: string;
+  name: string;
+  keywords: string[];
+  image: string;
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  publisher: string;
+  author: string;
+  url: string;
+  notes: recipeNote[];
+  origin: string;
+}
+interface Props {
+  show: boolean;
+  handleClose: () => void;
+  recipe: recipe;
+}
+
+const RecipeModal: React.FC<Props> = ({ show, handleClose, recipe }) => {
   let j = 1;
 
   return (

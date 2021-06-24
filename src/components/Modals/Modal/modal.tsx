@@ -4,24 +4,28 @@ import * as styles from "./modal.module.css";
 import { trackPromise } from "react-promise-tracker";
 
 import LoadingInd from "../../LoadingInd/loadingInd";
-import apiService from "../../../services/apiService";
+import { scrapeRecipe } from "../../../services/apiService";
 
-const Modal = ({ show, handleClose }) => {
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+interface Props {
+  show: boolean;
+  handleClose: () => void;
+}
+
+const Modal: React.FC<Props> = ({ show, handleClose }) => {
+  const [url, setUrl] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
 
-  const handleChange = ({ target }) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setUrl(target.value);
     setError(false);
     setSuccess(false);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement>  = async (e) => {
     e.preventDefault();
     trackPromise(
-      apiService
-        .scrapeRecipe(url)
+      scrapeRecipe(url)
         .then((res) => {
           if (res.ok) {
             setUrl("");

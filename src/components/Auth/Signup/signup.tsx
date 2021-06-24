@@ -1,45 +1,57 @@
-import React, { useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import { Link, navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { trackPromise } from "react-promise-tracker";
 
 import LoadingInd from "../../LoadingInd/loadingInd";
-import apiService from "../../../services/apiService";
+import { attemptSignup } from "../../../services/apiService";
 import { set_is_authenticated } from "../../../state/actions";
 import logo from "../../../images/bighat.png";
 import * as styles from "./signup.module.css";
 
+interface State {
+  email: string;
+  password: string;
+  username: string;
+}
 
-const initialState = {
+interface authResponse extends Response {
+  locals: {
+    accessToken: string;
+  }
+}
+
+const initialState: State = {
   email: "",
   password: "",
   username: "",
 };
-const Signup = () => {
-  const [signup, setSignup] = useState(initialState);
-  const [signupError, setSignupError] = useState(false);
-  const [errorText, setErrorText] = useState("");
+
+const Signup: React.FC = () => {
+  const [signup, setSignup] = useState<State>(initialState);
+  const [signupError, setSignupError] = useState<boolean>(false);
+  const [errorText, setErrorText] = useState<string>("");
   const dispatch = useDispatch();
 
-  const handleLogin = ({ target }) => {
-    setSignup((oldSignup) => ({ ...oldSignup, [target.name]: target.value }));
+  const handleLogin: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    setSignup((oldSignup: State) => ({ ...oldSignup, [target.name]: target.value }));
     setSignupError(false);
   };
   const validateForm = () => {
     return !signup.email || !signup.password || !signup.username;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    trackPromise(apiService.attemptSignup(signup)
-    .then(res => res.json())
-    .then(res => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+    trackPromise(attemptSignup(signup)
+    .then<authResponse>(res => res.json())
+    .then((res: authResponse) => {
       dispatch(set_is_authenticated());
-      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('accessToken', res.locals.accessToken);
       setSignup(initialState);
       navigate('/profile');
     })
-    .catch((e) => {
+    .catch((err: string) => {
       setErrorText('This email or username is already in use');
       setSignupError(true);
     }));
@@ -48,7 +60,7 @@ const Signup = () => {
   return (
     <div className={styles.container}>
       <img src={logo} className={styles.logo} alt="logo" />
-      <form onSubmit={handleSubmit} className={styles.signupForm}>
+      <form onSubmit={handleSubmit} className={styles.signupForm} data-testid="form">
         <p className={styles.title}>chef signup</p>
         <input
           type="email"
@@ -77,7 +89,7 @@ const Signup = () => {
           signup
         </button>
 
-        <Link to="/" className={styles.linkText}>
+        <Link to="/" className={styles.linkText} data-testid="loginLink">
           click here to login
         </Link>
       </form>
