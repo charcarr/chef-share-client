@@ -20,11 +20,13 @@ interface authResponse extends Response {
     accessToken: string;
   }
 }
+
 const initialState: State = {
   email: "",
   password: "",
   username: "",
 };
+
 const Signup: React.FC = () => {
   const [signup, setSignup] = useState<State>(initialState);
   const [signupError, setSignupError] = useState<boolean>(false);
@@ -58,7 +60,7 @@ const Signup: React.FC = () => {
   return (
     <div className={styles.container}>
       <img src={logo} className={styles.logo} alt="logo" />
-      <form onSubmit={handleSubmit} className={styles.signupForm}>
+      <form onSubmit={handleSubmit} className={styles.signupForm} data-testid="form">
         <p className={styles.title}>chef signup</p>
         <input
           type="email"
