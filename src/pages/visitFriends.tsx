@@ -43,7 +43,7 @@ const VisitFriendsPage: React.FC<HTMLSelectElement> = () => {
       const store = await getFriendStore(selected.value).then(res => res.json());
       setFriendStore(store);
     } catch(e) {
-
+      console.log(e);
     }
   }
 
