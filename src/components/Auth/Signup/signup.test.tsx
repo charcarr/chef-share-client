@@ -1,5 +1,5 @@
-import * as React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import * as React from 'react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import ReduxWrapper from '../../../state/ReduxWrapper';
 import Signup from './signup';
 import Enzyme, { shallow } from 'enzyme';

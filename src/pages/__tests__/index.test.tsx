@@ -1,12 +1,11 @@
-import * as React from "react";
-import { render, waitFor } from "@testing-library/react";
+import * as React from 'react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import IndexPage from "../index";
+import IndexPage from '../index';
 import ReduxWrapper from '../../state/ReduxWrapper';
-import Mock from "../../components/Headings/mock";
 
-describe(`IndexPage`, () => {
-  it(`contains a greeting`, () => {
+describe('IndexPage', () => {
+  it('contains a greeting', () => {
     const { getByText, getByTestId } = render(<IndexPage />, { wrapper: ({ children }) => <ReduxWrapper element={children} /> });
 
     waitFor(() => {
@@ -26,11 +25,3 @@ describe(`IndexPage`, () => {
     })
   });
 });
-
-describe('Mock test', () => {
-  it('contains mock text', () => {
-    const { getByText } = render(<Mock />);
-
-    getByText('Some text')
-  })
-})
