@@ -1,5 +1,5 @@
-import * as React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import * as React from 'react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import ReduxWrapper from '../../../state/ReduxWrapper';
 import Login from './login';
 import Enzyme, { shallow } from 'enzyme';
@@ -21,7 +21,6 @@ describe('Login page', () => {
     waitFor(() => {
       const emailInput = getByPlaceholderText('email');
       const passwordInput = getByPlaceholderText('password');
-
 
       fireEvent.change(emailInput, loginUser.email);
       fireEvent.change(passwordInput, loginUser.password);
